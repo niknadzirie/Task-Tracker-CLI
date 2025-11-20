@@ -1,0 +1,5 @@
+{
+    "dotnet.defaultSolution": "Task Tracker CLI.sln",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
+}
