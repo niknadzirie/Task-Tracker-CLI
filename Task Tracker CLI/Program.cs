@@ -10,13 +10,13 @@ internal class Program
     private static void Main(string[] args)
     {
         //JSON File
-        List<TaskCli> taskClis = [];
+        List<TaskProperties> taskClis = [];
         string filePath = "data.json";
 
         if (File.Exists(filePath))
         {
             var jsonData = File.ReadAllText(filePath);
-            taskClis = JsonSerializer.Deserialize<List<TaskCli>>(jsonData, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() } });
+            taskClis = JsonSerializer.Deserialize<List<TaskProperties>>(jsonData, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() } });
         }
         else
         {
@@ -24,7 +24,7 @@ internal class Program
         }
 
         //Write Data
-        void WriteData(List<TaskCli> data)
+        void WriteData(List<TaskProperties> data)
         {
             string jsonString = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() } });
             File.WriteAllText(filePath, jsonString);
@@ -33,7 +33,7 @@ internal class Program
         //Add task
         void AddNewData(string description, TaskStatusEnum status = TaskStatusEnum.Todo)
         {
-            var newItem = new TaskCli { Id = Guid.NewGuid(), Description = description, Status = status, CreatedAt = DateTimeOffset.Now, UpdatedAt = DateTimeOffset.Now };
+            var newItem = new TaskProperties { Id = Guid.NewGuid(), Description = description, Status = status, CreatedAt = DateTimeOffset.Now, UpdatedAt = DateTimeOffset.Now };
             taskClis.Add(newItem);
             WriteData(taskClis);
             Console.WriteLine($"Task Added Successfully (ID: {newItem.Id})");
@@ -164,21 +164,4 @@ internal class Program
                 break;
         }
     }
-}
-
-//Task Structure
-public class TaskCli
-{
-    public Guid Id { get; set; }
-    public string Description { get; set; }
-    public TaskStatusEnum Status { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset UpdatedAt { get; set; }
-}
-
-public enum TaskStatusEnum
-{
-    Todo,
-    InProgress,
-    Done
 }
